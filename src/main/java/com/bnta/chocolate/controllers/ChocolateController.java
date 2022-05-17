@@ -19,7 +19,11 @@ public class ChocolateController {
 
     //GET
     @GetMapping
-    public ResponseEntity<List<Chocolate>> getChocolates() {
+    public ResponseEntity<List<Chocolate>> getChocolatesAndFilters(
+            @RequestParam(required = false, name = "cocoaPercentage") Integer cocoaPercentage) {
+        if (cocoaPercentage != null) {
+            return new ResponseEntity(chocolateRepository.findChocolateByCocoaPercentage(cocoaPercentage), HttpStatus.OK);
+        }
         return new ResponseEntity<>(chocolateRepository.findAll(), HttpStatus.OK);
     }
 
@@ -35,7 +39,5 @@ public class ChocolateController {
         chocolateRepository.save(newChocolate);
         return new ResponseEntity(newChocolate, HttpStatus.CREATED);
     }
-
-
 
 }
